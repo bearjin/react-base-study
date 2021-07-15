@@ -41,6 +41,7 @@ this.setState((prevState) => {
 ```
 - setState는 비동기이기 때문에 예전 state 값을 이용해 새로운 state 값을 만들때는 prevState를 이용해줘야 한다. setState 안에서 this.state를 사용할 경우   
 - setState로 state 의 값이 변하는 경우 렌더링 이루어 진다.
+- 여러개의 state가 같이 수정 되는 경우에 state가 수정된 만큼 렌더링이 일어날것 같지만 실제 렌더링은 한번만 이루어진다. React가 setState를 한번에 모아서 처리하기 때문에
 
 # ref
 ```
@@ -51,3 +52,21 @@ ref={(c) => {this.input = c;}}
 this.input.focus();
 ```
 document.querySelector(태그)를 사용하지 않고 태그에 ref를 선언하여 사용할 수 있다.
+
+# Function Component(함수형 컴포넌트)
+- setState, ref 를 사용하지 못한다. 두가지는 클래스형 컴포넌트에서 사용 가능
+- state가 변할 경우 클래스형 컴포넌트와 똑같이 렌더링이 이루어 진다. 다른점은 클래스형은 render만 다시 실행되고 함수형의 경우는 함수형 컴포넌트 선언 전체가 다시 실행되어 속도면에서 더 느릴 수 있다.
+
+# React Hooks
+- 함수형 컴포넌트에서도 setState, ref 를 동일하게 사용할 수 있다.
+```
+const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9)); 
+setFirst(Math.ceil(Math.random() * 9)) === setState({first: Math.ceil(Math.random() * 9)});
+
+const inputRef = React.useRef(null); === (c) => {this.input = c;}
+inputRef.current.focus() === this.input.focus();
+
+setResult((prevResult) => {
+    return '정답' + value;
+});
+```

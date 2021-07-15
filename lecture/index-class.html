@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">            
+            class GuGuDan extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        num1: Math.ceil(Math.random() * 9),
+                        num2: Math.ceil(Math.random() * 9),
+                        value: '',
+                        result: '',
+                        answer: '',
+                    }
+                }
+
+                onSubmit = (e) => {
+                        e.preventDefault();
+                        if (parseInt(this.state.value) === this.state.num1 * this.state.num2) {
+                            this.setState((prevState) => {
+                                return {
+                                    result: '정답' + prevState.value,
+                                    num1: Math.ceil(Math.random() * 9),
+                                    num2: Math.ceil(Math.random() * 9),
+                                    value: '',
+                                };
+                            });
+                        } else {
+                            this.setState({
+                                result: '틀림',
+                                value: '',
+                            });
+                        }
+                        this.input.focus();
+                    }
+
+                onChange = (e) => {{this.setState({value: e.target.value})}}
+
+                input;
+
+                render() { 
+                    return (
+                        <>
+                            <div>{this.state.num1} 곱하기 {this.state.num2} 는?</div>
+                            <form onSubmit={this.onSubmit}>
+                                <input ref={(c) => {this.input = c;}} type="number" onChange={this.onChange} value={this.state.value} />
+                                <button type="submit">입력!</button>
+                            </form>
+                            <div>{this.state.result}</div>
+                        </>
+                    );
+                }
+            }            
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(<GuGuDan />, document.querySelector('#root'));
+        </script>
+    </body>
+</html>
