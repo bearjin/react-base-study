@@ -84,6 +84,8 @@ npm init (package.json 생성)
 npm i 설치할 패키지 네임 
 npm i 설치할 패키지 네임 설치할 패키지 네임 (여러개를 설치할 경우) 
 npm i -D 설치할 패키지 네임 (개발에서만 사용할 경우)
+
+npm i react react-dom
 ```
 
 
@@ -157,4 +159,33 @@ module: {
 },
 ```
 
-## 
+## 웹팩데브서버와 핫리로딩
+```
+$ npm i -D webpack-dev-server
+$ npm i react-refresh @pmmmwh/react-refresh-webpack-plugin -D
+
+packages.json 파일 수정
+"scripts": {
+    "dev": "webpack serve --env development"
+},
+
+webpack.config.js 파일 수정
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
+bable-loader options에 추가
+plugins: [
+    'react-refresh/babel'
+],
+
+plugins: [
+    new RefreshWebpackPlugin()
+],
+
+devServer: {
+    publicPath: '/dist/',
+    hot: true,
+},
+
+```
+웹팩데브서버는 빌드의 결과물을 돌리고 dist 서버에 보관한 후 변경점이 생길때 마다 새로고침을 해줍니다.   
+핫리로딩은 새로고침 시 데이터를 유지해줍니다.

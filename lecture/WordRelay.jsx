@@ -1,16 +1,38 @@
 const React = require('react');
-const { Component } = React;
+const { useState, useRef } = React;
 
-class WordRelay extends Component {
-    state = {
-        text: 'Hello Webpack',
-    }
+const WordRelay = () => {
+    const [word, setWord] = useState({ word: '베어진' });
+    const [value, setValue] = useState({ value: '' });
+    const [result, setResult] = useState({ result: '' });
+    const inputRef = useRef((c) => { this.input = c; });
 
-    render() {
-        return (
-            <h1>{this.state.text}</h1>
-        );
-    }
+    onSubmitForm = (e) => {
+        e.preventDefault();
+        if (word[word.length - 1] === value[0]) {
+            setResult({ result: '딩동댕' });
+            setWord({ word: value });
+            setValue({ value: '' });
+        } else {
+            setResult({ result: '땡' });
+            setValue({ value: '' });
+        }
+        inputRef.focus();
+    };
+
+    onChangeInput = (e) => {
+        setValue({ value: e.target.value });
+    };
+    return (
+        <>
+            <div>{word}</div>
+            <form onSubmit={onSubmitForm}>
+                <input ref={inputRef} onChange={onChangeInput} value={value}></input>
+                <button>입력!</button>
+            </form>
+            <div>{result}</div>
+        </>
+    );
 }
 
 module.exports = WordRelay;
