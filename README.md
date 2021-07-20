@@ -5,7 +5,7 @@
 
 ## Babel
 JavaScript 엔진에서 실행할 수 있는 이전 버전과 호환되는 JavaScript 버전으로 변환하는 데 주로 사용되는 무료 오픈 소스 JavaScript 트랜스컴파일러로 JavaScript 최신 문법을 사용할 수 있게 해줍니다.
-```
+```html
 <div id="output"></div>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
 <script type="text/babel">
@@ -20,19 +20,19 @@ JavaScript 엔진에서 실행할 수 있는 이전 버전과 호환되는 JavaS
 함수를 메소드화 시키는 이유는 렌더링 될 때 마다 함수를 매번 재선언하지 않아 불필요한 메모리 낭비를 막을 수 있다.
 
 ## this
-```
+```javascript
 onChange = function(e) {{this.setState({value: e.target.value})}} 오류
 
 onChange = function(e) {{this.setState({value: e.target.value})}}.bind(this) 정상
 ```
 컴포넌트에서 화살표 함수를 사용하지 않고 함수를 선언할 경우 this는 컴포넌트 본인을 가리키지 못하고 다른 객체를 가리키게 되기 때문에 this를 bind 시켜줘야 합니다.
-```
+```javascript
 onChange = (e) => {{this.setState({value: e.target.value})}}
 ```
 화살표 함수는 this를 컴포넌트 본인을 가르켜 주기 때문에 this를 bind 시켜주지 않아도 정상적으로 작동이 됩니다.
 
 ## setState
-```
+```javascript
 this.setState((prevState) => {
     return {
         value: prevState.value + 1;
@@ -44,7 +44,7 @@ this.setState((prevState) => {
 - 여러개의 state가 같이 수정 되는 경우에 state가 수정된 만큼 렌더링이 일어날것 같지만 실제 렌더링은 한번만 이루어진다. React가 setState를 한번에 모아서 처리하기 때문에
 
 ## ref
-```
+```javascript
 input; 
 
 ref={(c) => {this.input = c;}}
@@ -59,7 +59,7 @@ document.querySelector(태그)를 사용하지 않고 태그에 ref를 선언하
 
 ## React Hooks
 - 함수형 컴포넌트에서도 setState, ref 를 동일하게 사용할 수 있다.
-```
+```javascript
 const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9)); 
 setFirst(Math.ceil(Math.random() * 9)) === setState({first: Math.ceil(Math.random() * 9)});
 
@@ -79,7 +79,7 @@ Node Package Manager(혹은 Node Package Module)의 줄임말로써 Node.js의 �
 
 ## package.json
 패키지 관련 정보들을 확인할 수 있는 파일
-```
+```javascript
 npm init (package.json 생성)
 npm i 설치할 패키지 네임 
 npm i 설치할 패키지 네임 설치할 패키지 네임 (여러개를 설치할 경우) 
@@ -91,7 +91,7 @@ npm i react react-dom
 
 # WEBPACK
 규모가 큰 프로젝트의 경우 컴포넌트를 수백,수천개를 만들게 되면서 스크립트파일이 그만큼 많아지게 때문에 중복이 생길 수도 있고 유지보수에 어려움이 생기게 됩니다. 이 수많은 파일들을 하나의 파일로 만들어 주며 중복, 불필요한 코드들까지 제거해주는 것이 웹팩입니다. 
-```
+```javascript
 웹팩 설치
 npm i webpack webpack-cli
 
@@ -131,7 +131,7 @@ module.exports = {
 },
 ```
 기본 설정 후 웹팩을 실행하면 app.js 가 생성되고 에러가 발생하게 됩니다. jsx 파일을 웹팩에서 해석하지 못하기 때문에 바벨을 설치하고 설정을 추가해 줘야 합니다.
-```
+```javascript
 바벨 설치
 npm i -D @babel/core // 기본 바벨 문법
 npm i -D @babel/preset-env // 사용자 환경에 맞게 변경해주는 것
@@ -141,7 +141,7 @@ npm i -D babel-loader // 바벨과 웹팩을 연결해주는 것
 preset : plugin들의 모임
 ```
 모듈을 좀 더 구체적으로 작성해 필요한 작업들만 적용 시킬 수 있습니다. preset-env의 경우 사용자 환경에 맞게 크로스 브라우징을 시켜주는 preset 으로 target에 browsers 를 지정할 경우 해당되는 브라우저까지만 동작되도록 변환 시켜줍니다.
-```
+```javascript
 module: {
     rules: [{
         test: /\.jsx?/,
@@ -160,7 +160,7 @@ module: {
 ```
 
 ## 웹팩데브서버와 핫리로딩
-```
+```javascript
 $ npm i -D webpack-dev-server
 $ npm i react-refresh @pmmmwh/react-refresh-webpack-plugin -D
 
@@ -190,14 +190,67 @@ devServer: {
 웹팩데브서버는 빌드의 결과물을 돌리고 dist 서버에 보관한 후 변경점이 생길때 마다 새로고침을 해줍니다.   
 핫리로딩은 새로고침 시 데이터를 유지해줍니다.
 
-## import와 require 비교
+# import와 require 비교
 둘은 모두 모듈 키워드로 파일을 불러 올 때 사용합니다. require는 node.js 에서 사용되는 CommonJs 키워드이고, import는 ES2015에 도입된 키워드입니다. babel을 사용할 경우 import 키워드를 require로 변환 시켜주기 때문에 사용할 수 있지만 babel 을 사용하지 못하는 곳에서는 require 키워드를 사용해야 합니다.   
 ex:) webpack.config.js
 
-## 리액트 반복문(key)
+# 리액트 반복문(key)
 리액트에서 반복문을 사용할 경우 요소에 key값을 추가해줘야 합니다. 리액트는 key 값을 통해 컴포넌트를 구분하기 때문에 key 값은 고유값으로 지정해줘야 합니다. 키값을 index로 사용할 경우 추가 하거나 수정 삭제를 하는 경우도 key 값을 가지고 판단하기 때문에 배열의 순서가 바뀌면 문제가 생길 수 있어 index 값을 사용하지 않아야 한다. 추가만 하는 경우에는 사용해도 괜찮다.
 
-## 주석
-```
+# 주석
+```javascript
 {/* 쏼라쏼라 */}
 ```
+
+# 구조분해할당
+[구조분해할당 MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+```javascript
+const [a, b, ...rest] = [10, 20, 30, 40, 50];
+console.log(a, b, rest); // 10, 20, [30, 40, 50]
+
+const { value, answer, tries} = this.state; // this.state를 생략해 작성 할 수 있다.
+```
+
+# 리액트 렌더링 방지하기
+1. shouldComponentUpdate()를 사용해 새로운 state값과 현재 state값을 비교해 같을 경우 true, 다를 경우 false 를 리턴하여 렌더링을 방지 합니다.
+```javascript
+shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (this.state.counter !== nextState.counter) {
+        return true;
+    }
+    return false;
+}
+```
+2. PureComponent 는 shouldComponentUpdate 에서 state 값을 비교하는 것을 리액트가 알아서 해주는 컴포넌트입니다. 
+
+3. 함수형 컴포넌트에서는 React.memo를 통해 PureComponent 처럼 사용할 수 있습니다.
+
+# 배열 & 객체
+리액트는 배열에 값을 추가할 경우 push()를 사용하지 않고 새로운 배열을 만들어 값을 추가해야 합니다. 리액트는 참조가 바뀌어야 값이 변경된걸 알고 렌더링이 일어나기 때문입니다. 객체도 배열과 마찬가지로 새로운 객체를 만들어 리액트가 변경 되었다는것을 알아차릴수 있도록 해줘야 합니다. 또한 배열과 객체의 구조는 간단한 구조로 만드는것이 좋다.
+```javascript
+const arr = [];
+
+arr.push(1); // no
+arr === arr // true
+const arr2 = [...arr, 1]; // okay
+arr === arr2 // false
+```
+
+# creatRef
+class 컴포넌트에서도 createRef를 이용하여 useRef 와 같은 문법으로 사용할 수 있습니다.
+```javascript
+import React, { Component, createRef } from 'react';
+
+inputRef = createRef();
+this.inputRef.current.focus();
+
+// 다른동작들을 추가해서 하고 싶을때는 예전 방식을 사용
+inputRef;
+onInputRef = (c) => {
+    console.log('test');
+    this.inputRef = c;
+}
+```
+
+# props와 state 연결
+자식이 받아온 props를 변경해서는 안된다. props를 변경하고 싶으면 부모의 props를 변경하거나 부모의 props를 state로 만들어서 변경해줘야 한다.

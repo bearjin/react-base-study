@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState, memo } from 'react';
 
-class Try extends Component {
-    render() {
-        return (
-            <li>
-                <b>{this.props.item.fruit}</b> - {this.props.index}
-                <div>컨텐츠</div>
-                <div>컨텐츠1</div>
-                <div>컨텐츠2</div>
-                <div>컨텐츠3</div>
-            </li>
-        );
-    }
-}
+const Try = memo(({ tryInfo }) => {
+    const [result, setResult] = useState(tryInfo.result);
+
+    const onClick = () => {
+        setResult('1');
+    };
+
+    return (
+        <li>
+            <div>{tryInfo.try}</div>
+            <div onClick={onClick}>{tryInfo.result}</div>
+        </li>
+    );
+});
 
 export default Try;
