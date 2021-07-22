@@ -229,6 +229,23 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
   return false;
 }
 ```
+```javascript
+import React, { PureComponent } from 'react';
+
+class Pure extends PureComponent {
+
+}
+export default Pure;
+```
+```javascript
+import React, { memo } from 'react';
+
+const Try = memo(() => {
+  return (
+    
+  );
+});
+```
 
 # 배열 & 객체
 - 리액트는 배열에 값을 추가할 경우 push()를 사용하지 않고 새로운 배열을 만들어 값을 추가해야 합니다. 
@@ -327,4 +344,50 @@ const onClickRedo = useCallback(() => {
 
 # Hooks에 대한 팁
 - Hooks 시리즈들은 순서가 중요해 중간에 변경되면 안되기 때문에 조건문 안에 절대 넣으면 안되고 함수나 반복문 안에도 웬만하면 넣지 않도록 한다. 최상위에 선언하기
-- 
+
+# useReducer
+- useState를 사용해서 state를 여러개 선언할 경우 state들을 한번에 모와서 선언해줄 때 사용됩니다.
+- dispatch로 액션을 취하고 reducer 안에서 액션 타입에 따른 동작을 동해 state를 변경해 줍니다. state 변경시에는 불변성을 항상 신경써야 합니다.
+```javascript
+const initialState = {
+  winner: '',
+  turn: 'O',
+  tableData: [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', ''],
+  ],
+  recentCell: [-1, -1],
+}; // state 모음
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case SET_WINNER:
+      // state.winner = action.winner; 이렇게 하면 안됨.
+      return {
+        ...state,
+        winner: action.winner,
+      };
+    default:
+      return state;
+  }
+}; // 액션 실행
+
+const TicTacToe = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  dispatch({ type: SET_WINNER, winner: 'O' });
+};
+```
+
+# 렌더링 디버깅 하기
+- useEffect와 useRef를 사용해 렌더링에 대한 디버깅을 할 수 있습니다.
+- 값이 false가 나오는 경우는 값이 변했다는것이고 그 값에 의해 렌더링이 발생하는 것을 알 수 있습니다.
+```javascript
+console.log('td rerendered');
+const ref = useRef([]);
+useEffect(() => {
+  console.log(rowIndex === ref.current[0], cellIndex === ref.current[1], dispatch === ref.current[2], cellData === ref.current[3]);
+  ref.current = [rowIndex, cellIndex, dispatch, cellData];
+}, [rowIndex, cellIndex, dispatch, cellData]);
+```
