@@ -391,3 +391,26 @@ useEffect(() => {
   ref.current = [rowIndex, cellIndex, dispatch, cellData];
 }, [rowIndex, cellIndex, dispatch, cellData]);
 ```
+
+# Context api
+- createContext에 사용할 기본 데이터를 넣어주고 선언한 값(TableContext)에 Provider를 추가해 자식들에게 물려줄 값(value)를 통해 전달이 가능하고 value는 항상 캐시를 해줘야 합니다.
+- 자식들은 사용하고자 하는 값을 계속 전달 받지 않고 useContext를 사용해 원하는 값을 전달 받아 사용 가능합니다.
+- Context api를 사용할 React.memo, useMemo를 활용해 최적화를 신경 써줘야 합니다. 
+```javascript
+export const TableContext = createContext({
+  tableData: [],
+  halted: true,
+  dispatch: () => { },
+});
+
+const value = useMemo(() => ({ tableData, halted, dispatch }), [tableData, halted]); // value 캐싱
+
+return (
+  <TableContext.Provider value={value}>
+    <Form />
+    <div>{timer}</div>
+    <Table />
+    <div>{result}</div>
+  </TableContext.Provider>
+);
+```
