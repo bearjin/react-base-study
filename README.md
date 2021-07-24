@@ -414,3 +414,38 @@ return (
   </TableContext.Provider>
 );
 ```
+
+# 리액트 라우터
+- 라우터는 싱글페이지안에서 페이지가 여러개 있는 것처럼 가상의 페이지를 생성 시키고 컴포넌트를 연결해 보여 줍니다.
+- **BrowserRouter:** 새로고침하면 서버에 요청이 가고 실제 페이지는 존재하지 않기 때문에 오류가 난다. 새로고침시에도 정상적인 페이지를 노출하기 위해서는 서버에 설정이 필요합니다.
+- **HashRouter:** 주소 사이에 #(해쉬)가 포함되고 새로고침해도 서버에서 #(해쉬)를 알지 못해 요청이 가지 않고 브라우저를 통해 페이지가 노출 됩니다. 하지만 서버에서 알지 못하기 때문에 검색엔진 또한 등록이 되지 않습니다.
+- **withRouter:** history, location, match 를 사용하고 싶을 때 Router와 연결이 되어 있지 않을 때 withRouter를 통해 사용할 수 있습니다.
+- **history:** 페이지를 이동했던 내용들을 기억
+- **location:** 주소에 대한 정보
+- **match:** 동적 주소들에 대한 정보
+- **query:** 주소를 통해 데이터를 전달 할때 사용하고 location의 search에 담긴다. 부가적인 정보를 통해 요청을 구분하기 위해 사용하고 게시판 등에서 사용됩니다.
+- **URLSearchParams:** query를 사용해 전달한 데이터를 가져오기 위해 사용
+```javascript
+<Link to="/game/number-baseball?query=&data&author=bearjin">숫자야구</Link>
+let value = new URLSearchParams(this.props.location.search.slice(1));
+console.log(value.get('author'));
+// bearjin
+```
+- **reder:** props 넘기고 싶을 때 사용
+```javascript
+<Route path="/game/:name" render={(props) => <GameMatcher {...props} />} />
+```
+- **Switch:** 주소가 일치하는 경우 해당 컴포넌트들을 다 보여주게 되는데 Switch를 쓸 경우 첫번째 일치하는 컴포넌트만 보여줍니다. 주의 할 점은 상위주소도 일치하다가 판단하기 때문에 주의해야합니다.
+```javascript
+<Switch>
+  <Route path="/game/:name" render={(props) => <GameMatcher {...props} />} />
+  <Route path="/game/number-baseball" render={(props) => <GameMatcher {...props} />} />
+</Switch>
+```
+- **exact:** Switch에서 상위주소가 일치해 하위 주소의 컴포넌트가 노출되지 않을 경우 exact를 사용합니다. exact는 주소가 완전히 일치할 경우만 해당 컴포넌트를 보여줍니다.
+```javascript
+<Switch>
+  <Route exact path="/" render={(props) => <GameMatcher {...props} />} />
+  <Route path="/game/:name" render={(props) => <GameMatcher {...props} />} />
+</Switch>
+```
